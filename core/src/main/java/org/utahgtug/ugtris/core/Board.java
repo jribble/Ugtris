@@ -11,8 +11,8 @@ import playn.core.Graphics;
 import playn.core.SurfaceLayer;
 
 public class Board {
-    final int BoardWidth = 35;
-    final int BoardHeight = 42;
+    final int BoardWidth = 15;
+    final int BoardHeight = 30;
     
     int width;
     int height;
@@ -38,8 +38,6 @@ public class Board {
        //timer.start(); 
        width = graphics().screenWidth();
        height = graphics().screenHeight();
-       
-       width = height;
 
        //statusbar =  parent.getStatusBar();
        board = new Tetrominoes[BoardWidth * BoardHeight];

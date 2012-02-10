@@ -12,6 +12,8 @@ public class Ugtris implements Game {
 	
   @Override
   public void init() {
+	  graphics().setSize(200, 400);
+	  
     // create and add background image layer
     Image bgImage = assetManager().getImage("images/bg.png");
     ImageLayer bgLayer = graphics().createImageLayer(bgImage);
@@ -37,6 +39,6 @@ public class Ugtris implements Game {
 
   @Override
   public int updateRate() {
-    return 100;
+    return 125;
   }
 }
