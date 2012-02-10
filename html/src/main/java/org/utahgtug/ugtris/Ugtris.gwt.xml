@@ -1,0 +1,10 @@
+<module rename-to='ugtris'>
+  <inherits name='playn.PlayN'/>
+
+  <source path='core'/>
+  <source path='html'/>
+
+  <public path="resources" />
+
+  <entry-point class='org.utahgtug.ugtris.html.UgtrisHtml'/>
+</module>
