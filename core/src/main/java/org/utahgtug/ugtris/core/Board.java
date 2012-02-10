@@ -188,8 +188,6 @@ public class Board {
         curPiece = newPiece;
         curX = newX;
         curY = newY;
-        System.out.println(curX + "," + curY);
-        //repaint();
         return true;
     }
 
@@ -234,17 +232,31 @@ public class Board {
         		Color.rgb(102, 204, 204), Color.rgb(218, 170, 0)
         };
 
+        int brighter_colors[] = { Color.rgb(0, 0, 0), Color.rgb(210, 121, 121), 
+        		Color.rgb(121, 210, 121), Color.rgb(121, 121, 210), 
+        		Color.rgb(210, 210, 121), Color.rgb(210, 121, 210), 
+        		Color.rgb(121, 210, 210), Color.rgb(245, 192, 0)
+        };
+
+        int darker_colors[] = { Color.rgb(0, 0, 0), Color.rgb(198, 83, 83), 
+        		Color.rgb(83, 198, 83), Color.rgb(83, 83, 198), 
+        		Color.rgb(198, 198, 83), Color.rgb(198, 83, 198), 
+        		Color.rgb(83, 198, 198), Color.rgb(194, 152, 0)
+        };
+
 
         int color = colors[shape.ordinal()];
+        int brighter_color = brighter_colors[shape.ordinal()];
+        int darker_color = darker_colors[shape.ordinal()];
 
         layer.surface().setFillColor(color);
         layer.surface().fillRect(x + 1, y + 1, squareWidth() - 2, squareHeight() - 2);
 
-        //layer.surface().setFillColor(color.brighter());
+        layer.surface().setFillColor(brighter_color);
         layer.surface().drawLine(x, y + squareHeight() - 1, x, y, 1);
         layer.surface().drawLine(x, y, x + squareWidth() - 1, y, 1);
 
-        //layer.surface().setColor(color.darker());
+        layer.surface().setFillColor(darker_color);
         layer.surface().drawLine(x + 1, y + squareHeight() - 1,
                          x + squareWidth() - 1, y + squareHeight() - 1, 1);
         layer.surface().drawLine(x + squareWidth() - 1, y + squareHeight() - 1,
