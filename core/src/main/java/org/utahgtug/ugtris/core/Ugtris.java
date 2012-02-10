@@ -7,25 +7,36 @@ import playn.core.Image;
 import playn.core.ImageLayer;
 
 public class Ugtris implements Game {
+	
+	private Board board;
+	
   @Override
   public void init() {
     // create and add background image layer
     Image bgImage = assetManager().getImage("images/bg.png");
     ImageLayer bgLayer = graphics().createImageLayer(bgImage);
     graphics().rootLayer().add(bgLayer);
+    
+    //graphics().rootLayer().add(sLayer);
+    
+    board = new Board(this);
+    KeyboardController controller = new KeyboardController(board);
+    keyboard().setListener(controller);
   }
 
   @Override
   public void paint(float alpha) {
     // the background automatically paints itself, so no need to do anything here!
+	board.paint();
   }
 
   @Override
   public void update(float delta) {
+	  board.update();
   }
 
   @Override
   public int updateRate() {
-    return 25;
+    return 100;
   }
 }
