@@ -2,8 +2,6 @@ package org.utahgtug.ugtris.core;
 
 import static playn.core.PlayN.graphics;
 
-import java.util.Timer;
-
 import org.utahgtug.ugtris.core.Shape.Tetrominoes;
 
 import playn.core.Color;
@@ -19,7 +17,6 @@ public class Board {
     
     SurfaceLayer layer = null;
 
-    Timer timer;
     boolean isFallingFinished = false;
     boolean isStarted = false;
     boolean isPaused = false;
