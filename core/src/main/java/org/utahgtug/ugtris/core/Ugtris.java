@@ -12,7 +12,7 @@ public class Ugtris implements Game {
 	
   @Override
   public void init() {
-	  graphics().setSize(200, 400);
+	  graphics().setSize(400, 400);
 	  
     // create and add background image layer
     Image bgImage = assetManager().getImage("images/bg.png");
@@ -21,7 +21,7 @@ public class Ugtris implements Game {
     
     //graphics().rootLayer().add(sLayer);
     
-    board = new Board(this);
+    board = new Board(this, 100, 10, 200, 380);
     KeyboardController controller = new KeyboardController(board);
     keyboard().setListener(controller);
   }

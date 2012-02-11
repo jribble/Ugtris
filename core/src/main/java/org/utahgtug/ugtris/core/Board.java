@@ -12,6 +12,8 @@ public class Board {
     final int BoardWidth = 15;
     final int BoardHeight = 30;
     
+    int boardX;
+    int boardY;
     int width;
     int height;
     
@@ -23,7 +25,6 @@ public class Board {
     int numLinesRemoved = 0;
     int curX = 0;
     int curY = 0;
-    //JLabel statusbar;
     Shape curPiece;
     Tetrominoes[] board;
 
@@ -31,15 +32,22 @@ public class Board {
 
     public Board(Ugtris parent) {
        curPiece = new Shape();
-       //timer = new Timer(400, this);
-       //timer.start(); 
+       boardX = 0;
+       boardY = 0;
        width = graphics().screenWidth();
        height = graphics().screenHeight();
 
-       //statusbar =  parent.getStatusBar();
        board = new Tetrominoes[BoardWidth * BoardHeight];
-       //addKeyListener(new TAdapter());
        clearBoard();  
+    }
+    
+    public Board(Ugtris parent, int boardX, int boardY, int width, int height) {
+    	this(parent);
+    	
+    	this.boardX = boardX;
+    	this.boardY = boardY;
+    	this.width = width;
+    	this.height = height;
     }
 
     public void update() {
@@ -90,20 +98,27 @@ public class Board {
     { 
     	Graphics g = graphics();
     	if(layer == null) {
-    		layer = g.createSurfaceLayer(width, height);
+    		layer = g.createSurfaceLayer(graphics().screenWidth(), graphics().screenHeight());
     		g.rootLayer().add(layer);
     	} 
     	layer.surface().clear();
 
         //Dimension size = getSize();
-        int boardTop = (int) height - BoardHeight * squareHeight();
+        int boardTop = (height - BoardHeight * squareHeight()) + boardY;
+        int boardWidth = BoardWidth * squareWidth() + 1;
+        int boardHeight = BoardHeight * squareHeight() + boardTop;
+        
+        layer.surface().setFillColor(Color.rgb(0, 0, 0));
+        layer.surface().drawLine(boardX, boardTop, boardX, boardHeight, 1);
+        layer.surface().drawLine(boardX, boardHeight, boardX + boardWidth, boardHeight, 1);
+        layer.surface().drawLine(boardX + boardWidth, boardTop, boardX + boardWidth, boardHeight, 1);
 
 
         for (int i = 0; i < BoardHeight; ++i) {
             for (int j = 0; j < BoardWidth; ++j) {
                 Tetrominoes shape = shapeAt(j, BoardHeight - i - 1);
                 if (shape != Tetrominoes.NoShape)
-                    drawSquare(g, 0 + j * squareWidth(),
+                    drawSquare(g, boardX + 1 + j * squareWidth(),
                                boardTop + i * squareHeight(), shape);
             }
         }
@@ -112,7 +127,7 @@ public class Board {
             for (int i = 0; i < 4; ++i) {
                 int x = curX + curPiece.x(i);
                 int y = curY - curPiece.y(i);
-                drawSquare(g, 0 + x * squareWidth(),
+                drawSquare(g, boardX + 1 + x * squareWidth(),
                            boardTop + (BoardHeight - y - 1) * squareHeight(),
                            curPiece.getShape());
             }
