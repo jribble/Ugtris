@@ -25,12 +25,15 @@ public class Board {
     int numLinesRemoved = 0;
     int curX = 0;
     int curY = 0;
-    Shape curPiece;
+    Shape nextPiece = null;
+    Shape curPiece = null;
     Tetrominoes[] board;
 
-
+    Console console = null;
 
     public Board(Ugtris parent) {
+    	nextPiece = new Shape();
+    	nextPiece.setRandomShape();
        curPiece = new Shape();
        boardX = 0;
        boardY = 0;
@@ -118,8 +121,8 @@ public class Board {
             for (int j = 0; j < BoardWidth; ++j) {
                 Tetrominoes shape = shapeAt(j, BoardHeight - i - 1);
                 if (shape != Tetrominoes.NoShape)
-                    drawSquare(g, boardX + 1 + j * squareWidth(),
-                               boardTop + i * squareHeight(), shape);
+                    Board.drawSquare(layer, boardX + 1 + j * squareWidth(),
+                               boardTop + i * squareHeight(), squareWidth(), squareHeight(), shape);
             }
         }
 
@@ -127,8 +130,9 @@ public class Board {
             for (int i = 0; i < 4; ++i) {
                 int x = curX + curPiece.x(i);
                 int y = curY - curPiece.y(i);
-                drawSquare(g, boardX + 1 + x * squareWidth(),
+                drawSquare(layer, boardX + 1 + x * squareWidth(),
                            boardTop + (BoardHeight - y - 1) * squareHeight(),
+                           squareWidth(), squareHeight(),
                            curPiece.getShape());
             }
         }
@@ -174,7 +178,10 @@ public class Board {
 
     private void newPiece()
     {
-        curPiece.setRandomShape();
+    	curPiece.setShape(nextPiece.getShape());
+        nextPiece.setRandomShape();
+        if (console != null) console.setNextShape(nextPiece.getShape());
+        
         curX = BoardWidth / 2 + 1;
         curY = BoardHeight - 1 + curPiece.minY();
 
@@ -235,7 +242,7 @@ public class Board {
         }
      }
 
-    private void drawSquare(Graphics g, int x, int y, Tetrominoes shape)
+    public static void drawSquare(SurfaceLayer layer, int x, int y, int squareWidth, int squareHeight, Tetrominoes shape)
     {  	
     	
         int colors[] = { Color.rgb(0, 0, 0), Color.rgb(204, 102, 102), 
@@ -262,17 +269,17 @@ public class Board {
         int darker_color = darker_colors[shape.ordinal()];
 
         layer.surface().setFillColor(color);
-        layer.surface().fillRect(x + 1, y + 1, squareWidth() - 2, squareHeight() - 2);
+        layer.surface().fillRect(x + 1, y + 1, squareWidth - 2, squareHeight - 2);
 
         layer.surface().setFillColor(brighter_color);
-        layer.surface().drawLine(x, y + squareHeight() - 1, x, y, 1);
-        layer.surface().drawLine(x, y, x + squareWidth() - 1, y, 1);
+        layer.surface().drawLine(x, y + squareHeight - 1, x, y, 1);
+        layer.surface().drawLine(x, y, x + squareWidth - 1, y, 1);
 
         layer.surface().setFillColor(darker_color);
-        layer.surface().drawLine(x + 1, y + squareHeight() - 1,
-                         x + squareWidth() - 1, y + squareHeight() - 1, 1);
-        layer.surface().drawLine(x + squareWidth() - 1, y + squareHeight() - 1,
-                         x + squareWidth() - 1, y + 1, 1);
+        layer.surface().drawLine(x + 1, y + squareHeight - 1,
+                         x + squareWidth - 1, y + squareHeight - 1, 1);
+        layer.surface().drawLine(x + squareWidth - 1, y + squareHeight - 1,
+                         x + squareWidth - 1, y + 1, 1);
     }
     
     public void moveLeft()
@@ -346,4 +353,12 @@ public class Board {
          }
      }
      */
+    
+    public void setConsole ( Console console ) {
+    	this.console = console;
+    }
+    
+    public Console getConsole ( ) {
+    	return console;
+    }
 }

@@ -47,6 +47,13 @@ public class Shape {
     public int y(int index) { return coords[index][1]; }
     public Tetrominoes getShape()  { return pieceShape; }
 
+    public Tetrominoes getRandomShape () {
+        Random r = new Random();
+        int x = Math.abs(r.nextInt()) % 7 + 1;
+        Tetrominoes[] values = Tetrominoes.values(); 
+    	return values[x];
+    }
+    
     public void setRandomShape()
     {
         Random r = new Random();

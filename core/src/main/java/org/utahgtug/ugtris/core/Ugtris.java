@@ -9,6 +9,7 @@ import playn.core.ImageLayer;
 public class Ugtris implements Game {
 	
 	private Board board;
+	private Console console;
 	
   @Override
   public void init() {
@@ -22,6 +23,8 @@ public class Ugtris implements Game {
     //graphics().rootLayer().add(sLayer);
     
     board = new Board(this, 100, 10, 200, 380);
+    console = new SideConsole ( 300, 0, 100, 400, board.squareWidth(), board.squareHeight() );
+    board.setConsole(console);
     KeyboardController controller = new KeyboardController(board);
     keyboard().setListener(controller);
   }
@@ -30,6 +33,7 @@ public class Ugtris implements Game {
   public void paint(float alpha) {
     // the background automatically paints itself, so no need to do anything here!
 	board.paint();
+	console.paint();
   }
 
   @Override
