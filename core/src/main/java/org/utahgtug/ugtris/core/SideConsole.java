@@ -4,10 +4,13 @@ import static playn.core.PlayN.graphics;
 
 import org.utahgtug.ugtris.core.Shape.Tetrominoes;
 
+import playn.core.CanvasLayer;
+import playn.core.Color;
 import playn.core.Graphics;
-import playn.core.SurfaceLayer;
 
 public class SideConsole implements Console {
+	
+	public static int textColor = Color.rgb(0, 0, 0);
 	
 	int x;
 	int y;
@@ -19,7 +22,7 @@ public class SideConsole implements Console {
 	int score;
 	Shape.Tetrominoes nextShape;
 	
-	SurfaceLayer layer = null;
+	CanvasLayer layer = null;
 
 	public SideConsole ( int x, int y, int width, int height, int squareWidth, int squareHeight ) {
 		this.x = x;
@@ -44,13 +47,22 @@ public class SideConsole implements Console {
 	public void paint() {
     	Graphics g = graphics();
     	if(layer == null) {
-    		layer = g.createSurfaceLayer(graphics().screenWidth(), graphics().screenHeight());
+    		layer = g.createCanvasLayer(graphics().screenWidth(), graphics().screenHeight());
     		g.rootLayer().add(layer);
     	} 
-    	layer.surface().clear();
+    	layer.canvas().clear();
 
-    	int curX = x+50;
-    	int curY = y+100;
+    	int curX = x+5;
+    	int curY = y+50;
+
+    	layer.canvas().setStrokeColor(textColor);
+    	layer.canvas().setFillColor(textColor);
+    	layer.canvas().drawText("Score: " + score, curX, curY);
+    	
+    	curY = curY + 20;
+    	layer.canvas().drawText("Coming Up:", curX, curY);
+    	curX = x+30;
+    	curY = curY + 20;
         if (nextShape != null && nextShape != Tetrominoes.NoShape) {
         	Shape nextPiece = new Shape();
         	nextPiece.setShape(nextShape);
