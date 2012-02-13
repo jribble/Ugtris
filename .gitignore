@@ -13,6 +13,7 @@
 /html/target
 /html/.classpath
 /html/.project
+/html/.gwt
 /java/.settings
 /java/target
 /java/.classpath
