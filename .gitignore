@@ -19,3 +19,10 @@
 /java/.classpath
 /java/.project
 /target
+/.idea
+/android/ugtris-android.iml
+/core/ugtris-core.iml
+/html/ugtris-html.iml
+/java/ugtris-java.iml
+/ugtris.iml
+/out

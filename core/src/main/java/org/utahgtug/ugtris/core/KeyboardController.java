@@ -7,6 +7,10 @@ import playn.core.Keyboard.Event;
 public class KeyboardController extends Keyboard.Adapter implements HasBoardControl {
 
 	private BoardControl board;
+
+    public KeyboardController ( )
+    {
+    }
 	
 	public KeyboardController ( BoardControl board )
 	{
