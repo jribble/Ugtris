@@ -9,7 +9,7 @@ import playn.core.Color;
 import playn.core.Graphics;
 import playn.core.SurfaceLayer;
 
-public class Board {
+public class Board implements BoardControl {
     final int BoardWidth = 15;
     final int BoardHeight = 30;
     

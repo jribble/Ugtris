@@ -4,13 +4,13 @@ import playn.core.Key;
 import playn.core.Keyboard;
 import playn.core.Keyboard.Event;
 
-public class KeyboardController extends Keyboard.Adapter {
+public class KeyboardController extends Keyboard.Adapter implements HasBoardControl {
 
-	private Board board;
+	private BoardControl board;
 	
-	public KeyboardController ( Board board )
+	public KeyboardController ( BoardControl board )
 	{
-		this.board = board;
+		setBoardControl( board );
 	}
 	
 	@Override
@@ -36,6 +36,11 @@ public class KeyboardController extends Keyboard.Adapter {
             board.drop();
             break;
         }
+	}
+
+	@Override
+	public void setBoardControl(BoardControl control) {
+		this.board = control;		
 	}
 	
 
