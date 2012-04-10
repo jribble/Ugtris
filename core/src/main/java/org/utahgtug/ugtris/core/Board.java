@@ -1,6 +1,7 @@
 package org.utahgtug.ugtris.core;
 
 import static playn.core.PlayN.graphics;
+import static playn.core.PlayN.assets;
 
 import org.utahgtug.ugtris.core.Shape.Tetrominoes;
 
@@ -8,6 +9,9 @@ import playn.core.CanvasLayer;
 import playn.core.Color;
 import playn.core.Graphics;
 import playn.core.SurfaceLayer;
+import playn.core.PlayN;
+import playn.core.Sound;
+
 
 public class Board implements BoardControl {
     final int BoardWidth = 15;
@@ -32,6 +36,10 @@ public class Board implements BoardControl {
 
     Console console = null;
 
+    // The various bang sounds for a piece hitting the bottom of the board
+    private Sound[] bangSounds = null;
+    private static final String[] bangSoundSources = {"audio/thump1", "audio/thump2", "audio/thump3"};
+    
     public Board(Ugtris parent) {
     	nextPiece = new Shape();
     	nextPiece.setRandomShape();
@@ -43,6 +51,12 @@ public class Board implements BoardControl {
 
        board = new Tetrominoes[BoardWidth * BoardHeight];
        clearBoard();  
+       
+       // Set up the sound we'll need for various events
+       bangSounds = new Sound[bangSoundSources.length];
+       for( int i = 0; i < bangSoundSources.length; ++i ) {
+    	   bangSounds[i] = assets().getSound(bangSoundSources[i]);
+       }
     }
     
     public Board(Ugtris parent, int boardX, int boardY, int width, int height) {
@@ -163,6 +177,9 @@ public class Board implements BoardControl {
             board[i] = Tetrominoes.NoShape;
     }
 
+    /*
+     * Handle the logic for when the piece hits the bottom of the board
+     */
     private void pieceDropped()
     {
         for (int i = 0; i < 4; ++i) {
@@ -171,6 +188,9 @@ public class Board implements BoardControl {
             board[(y * BoardWidth) + x] = curPiece.getShape();
         }
 
+        // Play the sound for the piece hitting the bottom of the board
+        playThump();
+        
         removeFullLines();
 
         if (!isFallingFinished)
@@ -407,5 +427,9 @@ public class Board implements BoardControl {
     
     public Console getConsole ( ) {
     	return console;
+    }
+    
+    private void playThump() {
+    	bangSounds[0].play();
     }
 }
