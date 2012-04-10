@@ -430,6 +430,8 @@ public class Board implements BoardControl {
     }
     
     private void playThump() {
-    	bangSounds[0].play();
+    	java.util.Random random = new java.util.Random();
+    	int i = random.nextInt(3);
+    	bangSounds[i].play();
     }
 }
