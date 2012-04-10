@@ -6,10 +6,14 @@ import playn.core.Game;
 import playn.core.Image;
 import playn.core.ImageLayer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Ugtris implements Game {
 	
-	private Board board;
+	private Board board = null;
 	private Console console;
+    private List<HasBoardControl> controllers = new ArrayList<HasBoardControl>();
 	
   @Override
   public void init() {
@@ -25,7 +29,9 @@ public class Ugtris implements Game {
     board = new Board(this, 100, 10, 200, 380);
     console = new SideConsole ( 300, 0, 100, 400, board.squareWidth(), board.squareHeight() );
     board.setConsole(console);
-    KeyboardController controller = new KeyboardController(board);
+    connectControllers();
+    KeyboardController controller = new KeyboardController();
+    addController(controller);
     keyboard().setListener(controller);
   }
 
@@ -44,5 +50,18 @@ public class Ugtris implements Game {
   @Override
   public int updateRate() {
     return 125;
+  }
+
+  public void addController ( HasBoardControl controller ) {
+      controllers.add(controller);
+      if ( board != null ) {
+          controller.setBoardControl(board);
+      }
+  }
+
+  private void connectControllers ( ) {
+      for ( HasBoardControl controller : controllers ) {
+          controller.setBoardControl ( board );
+      }
   }
 }

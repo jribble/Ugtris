@@ -4,11 +4,12 @@ import static playn.core.PlayN.graphics;
 
 import org.utahgtug.ugtris.core.Shape.Tetrominoes;
 
+import playn.core.CanvasLayer;
 import playn.core.Color;
 import playn.core.Graphics;
 import playn.core.SurfaceLayer;
 
-public class Board {
+public class Board implements BoardControl {
     final int BoardWidth = 15;
     final int BoardHeight = 30;
     
@@ -180,7 +181,10 @@ public class Board {
     {
     	curPiece.setShape(nextPiece.getShape());
         nextPiece.setRandomShape();
-        if (console != null) console.setNextShape(nextPiece.getShape());
+        if (console != null) {
+        	console.setNextShape(nextPiece.getShape());
+        	console.setScore(numLinesRemoved);
+        }
         
         curX = BoardWidth / 2 + 1;
         curY = BoardHeight - 1 + curPiece.minY();
@@ -280,6 +284,49 @@ public class Board {
                          x + squareWidth - 1, y + squareHeight - 1, 1);
         layer.surface().drawLine(x + squareWidth - 1, y + squareHeight - 1,
                          x + squareWidth - 1, y + 1, 1);
+    }
+
+    public static void drawSquare(CanvasLayer layer, int x, int y, int squareWidth, int squareHeight, Tetrominoes shape)
+    {  	
+    	
+        int colors[] = { Color.rgb(0, 0, 0), Color.rgb(204, 102, 102), 
+        		Color.rgb(102, 204, 102), Color.rgb(102, 102, 204), 
+        		Color.rgb(204, 204, 102), Color.rgb(204, 102, 204), 
+        		Color.rgb(102, 204, 204), Color.rgb(218, 170, 0)
+        };
+
+        int brighter_colors[] = { Color.rgb(0, 0, 0), Color.rgb(210, 121, 121), 
+        		Color.rgb(121, 210, 121), Color.rgb(121, 121, 210), 
+        		Color.rgb(210, 210, 121), Color.rgb(210, 121, 210), 
+        		Color.rgb(121, 210, 210), Color.rgb(245, 192, 0)
+        };
+
+        int darker_colors[] = { Color.rgb(0, 0, 0), Color.rgb(198, 83, 83), 
+        		Color.rgb(83, 198, 83), Color.rgb(83, 83, 198), 
+        		Color.rgb(198, 198, 83), Color.rgb(198, 83, 198), 
+        		Color.rgb(83, 198, 198), Color.rgb(194, 152, 0)
+        };
+
+
+        int color = colors[shape.ordinal()];
+        int brighter_color = brighter_colors[shape.ordinal()];
+        int darker_color = darker_colors[shape.ordinal()];
+
+        layer.canvas().setFillColor(color);
+        layer.canvas().setStrokeColor(color);
+        layer.canvas().fillRect(x + 1, y + 1, squareWidth - 2, squareHeight - 2);
+
+        layer.canvas().setFillColor(brighter_color);
+        layer.canvas().setStrokeColor(brighter_color);
+        layer.canvas().drawLine(x, y + squareHeight - 1, x, y);
+        layer.canvas().drawLine(x, y, x + squareWidth - 1, y);
+
+        layer.canvas().setFillColor(darker_color);
+        layer.canvas().setStrokeColor(darker_color);
+        layer.canvas().drawLine(x + 1, y + squareHeight - 1,
+                         x + squareWidth - 1, y + squareHeight - 1);
+        layer.canvas().drawLine(x + squareWidth - 1, y + squareHeight - 1,
+                         x + squareWidth - 1, y + 1);
     }
     
     public void moveLeft()

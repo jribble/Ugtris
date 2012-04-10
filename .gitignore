@@ -13,8 +13,16 @@
 /html/target
 /html/.classpath
 /html/.project
+/html/.gwt
 /java/.settings
 /java/target
 /java/.classpath
 /java/.project
 /target
+/.idea
+/android/ugtris-android.iml
+/core/ugtris-core.iml
+/html/ugtris-html.iml
+/java/ugtris-java.iml
+/ugtris.iml
+/out
