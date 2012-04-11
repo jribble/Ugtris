@@ -4,6 +4,7 @@ import static playn.core.PlayN.graphics;
 import static playn.core.PlayN.assets;
 
 import org.utahgtug.ugtris.core.Shape.Tetrominoes;
+import org.utahgtug.ugtris.core.ScoreTracker;
 
 import playn.core.CanvasLayer;
 import playn.core.Color;
@@ -35,28 +36,31 @@ public class Board implements BoardControl {
     Tetrominoes[] board;
 
     Console console = null;
+    ScoreTracker scoreTracker = null;
 
     // The various bang sounds for a piece hitting the bottom of the board
     private Sound[] bangSounds = null;
     private static final String[] bangSoundSources = {"audio/thump1", "audio/thump2", "audio/thump3"};
     
     public Board(Ugtris parent) {
-    	nextPiece = new Shape();
-    	nextPiece.setRandomShape();
-       curPiece = new Shape();
-       boardX = 0;
-       boardY = 0;
-       width = graphics().screenWidth();
-       height = graphics().screenHeight();
+        nextPiece = new Shape();
+        nextPiece.setRandomShape();
+        curPiece = new Shape();
+        boardX = 0;
+        boardY = 0;
+        width = graphics().screenWidth();
+        height = graphics().screenHeight();
 
-       board = new Tetrominoes[BoardWidth * BoardHeight];
-       clearBoard();  
-       
-       // Set up the sound we'll need for various events
-       bangSounds = new Sound[bangSoundSources.length];
-       for( int i = 0; i < bangSoundSources.length; ++i ) {
-    	   bangSounds[i] = assets().getSound(bangSoundSources[i]);
-       }
+        board = new Tetrominoes[BoardWidth * BoardHeight];
+        clearBoard();  
+
+        scoreTracker = new ScoreTracker();
+
+        // Set up the sound we'll need for various events
+        bangSounds = new Sound[bangSoundSources.length];
+        for( int i = 0; i < bangSoundSources.length; ++i ) {
+            bangSounds[i] = assets().getSound(bangSoundSources[i]);
+        }
     }
     
     public Board(Ugtris parent, int boardX, int boardY, int width, int height) {
@@ -202,8 +206,8 @@ public class Board implements BoardControl {
     	curPiece.setShape(nextPiece.getShape());
         nextPiece.setRandomShape();
         if (console != null) {
-        	console.setNextShape(nextPiece.getShape());
-        	console.setScore(numLinesRemoved);
+        	console.setNextShape(nextPiece.getShape());            
+        	console.setScore(scoreTracker.getScore());
         }
         
         curX = BoardWidth / 2 + 1;
@@ -260,9 +264,15 @@ public class Board implements BoardControl {
         if (numFullLines > 0) {
             numLinesRemoved += numFullLines;
             //statusbar.setText(String.valueOf(numLinesRemoved));
+            //Add to the score
+            scoreTracker.addScoreEvent(ScoreTracker.ScoreEvent.fromInt(numLinesRemoved));
             isFallingFinished = true;
             curPiece.setShape(Tetrominoes.NoShape);
             //repaint();
+        }
+        else
+        {
+            scoreTracker.addScoreEvent(ScoreTracker.ScoreEvent.None); //So we can keep track of back to back events
         }
      }
 
