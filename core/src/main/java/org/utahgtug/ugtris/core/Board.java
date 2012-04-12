@@ -265,15 +265,15 @@ public class Board implements BoardControl {
             numLinesRemoved += numFullLines;
             //statusbar.setText(String.valueOf(numLinesRemoved));
             //Add to the score
-            scoreTracker.addScoreEvent(ScoreTracker.ScoreEvent.fromInt(numLinesRemoved));
+            scoreTracker.addScoreEvent(ScoreTracker.ScoreEvent.fromInt(numFullLines));
             isFallingFinished = true;
             curPiece.setShape(Tetrominoes.NoShape);
             //repaint();
         }
-        else
-        {
-            scoreTracker.addScoreEvent(ScoreTracker.ScoreEvent.None); //So we can keep track of back to back events
-        }
+     //   else
+     //   {
+            //scoreTracker.addScoreEvent(ScoreTracker.ScoreEvent.None); //So we can reward for back to back events
+     //   }
      }
 
     public static void drawSquare(SurfaceLayer layer, int x, int y, int squareWidth, int squareHeight, Tetrominoes shape)
