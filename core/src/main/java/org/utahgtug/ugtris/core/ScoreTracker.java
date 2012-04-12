@@ -53,6 +53,13 @@ public class ScoreTracker {
 	int score;
 	ScoreEvent lastEvent; //1 score event ago
 	ScoreEvent secondToLastEvent; // 2 score events ago
+
+	//Counters for testing
+	int noneCount = 0;   
+    int singleCount = 0;
+    int doubleCount = 0;
+    int tripleCount = 0;
+    int ugtrisCount = 0;
 	
 	// Methods
 	public ScoreTracker () {
@@ -88,26 +95,31 @@ public class ScoreTracker {
 				base = 0;
 				de = 1;
 				te = 1;
+				noneCount++;
 				break;
 			case Single:
 				base = SINGLE;
 				de = SINGLE_BACK_2;
 				te = SINGLE_BACK_3;
+				singleCount++;
 				break;
 			case Double:
 				base = DOUBLE;
 				de = DOUBLE_BACK_2;
 				te = DOUBLE_BACK_3;
+				doubleCount++;
 				break;
 			case Triple:
 				base = TRIPLE;
 				de = TRIPLE_BACK_2;
 				te = TRIPLE_BACK_3;
+				tripleCount++;
 				break;
 			case Ugtris:
 				base = UGTRIS;
 				de = UGTRIS_BACK_2;
 				te = UGTRIS_BACK_3;
+				ugtrisCount++;
 				break;
 		//	default:  
         //		throw new ArgumentException("Unknown enum value found.");  
