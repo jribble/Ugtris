@@ -8,4 +8,5 @@ public interface Console {
 	
 	public void paint ( );
 
+    public void setLevel(int level);
 }

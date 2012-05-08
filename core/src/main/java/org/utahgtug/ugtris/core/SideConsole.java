@@ -20,6 +20,8 @@ public class SideConsole implements Console {
 	int squareHeight;
 	
 	int score;
+    int level;
+
 	Shape.Tetrominoes nextShape;
 	
 	CanvasLayer layer = null;
@@ -37,6 +39,11 @@ public class SideConsole implements Console {
 	public void setScore(int score) {
 		this.score = score;		
 	}
+
+    @Override
+    public void setLevel(int level) {
+        this.level = level;
+    }
 
 	@Override
 	public void setNextShape(Shape.Tetrominoes next) {
@@ -58,7 +65,10 @@ public class SideConsole implements Console {
     	layer.canvas().setStrokeColor(textColor);
     	layer.canvas().setFillColor(textColor);
     	layer.canvas().drawText("Score: " + score, curX, curY);
-    	
+
+        curY = curY + 20;
+        layer.canvas().drawText("Level: " + level, curX, curY);
+
     	curY = curY + 20;
     	layer.canvas().drawText("Coming Up:", curX, curY);
     	curX = x+30;

@@ -4,14 +4,8 @@ import static playn.core.PlayN.graphics;
 import static playn.core.PlayN.assets;
 
 import org.utahgtug.ugtris.core.Shape.Tetrominoes;
-import org.utahgtug.ugtris.core.ScoreTracker;
 
-import playn.core.CanvasLayer;
-import playn.core.Color;
-import playn.core.Graphics;
-import playn.core.SurfaceLayer;
-import playn.core.PlayN;
-import playn.core.Sound;
+import playn.core.*;
 
 
 public class Board implements BoardControl {
@@ -37,6 +31,7 @@ public class Board implements BoardControl {
 
     Console console = null;
     ScoreTracker scoreTracker = null;
+    DifficultyTracker difficultyTracker = null;
 
     // The various bang sounds for a piece hitting the bottom of the board
     private Sound[] bangSounds = null;
@@ -55,6 +50,7 @@ public class Board implements BoardControl {
         clearBoard();  
 
         scoreTracker = new ScoreTracker();
+        difficultyTracker = new DifficultyTracker();
 
         // Set up the sound we'll need for various events
         bangSounds = new Sound[bangSoundSources.length];
@@ -194,7 +190,11 @@ public class Board implements BoardControl {
 
         // Play the sound for the piece hitting the bottom of the board
         playThump();
-        
+
+        // Adjust Difficulty
+        difficultyTracker.addPieceFallen();
+
+        // Clear Out Full Lines
         removeFullLines();
 
         if (!isFallingFinished)
@@ -208,6 +208,7 @@ public class Board implements BoardControl {
         if (console != null) {
         	console.setNextShape(nextPiece.getShape());            
         	console.setScore(scoreTracker.getScore());
+            console.setLevel(difficultyTracker.getLevel());
         }
         
         curX = BoardWidth / 2 + 1;
@@ -265,7 +266,11 @@ public class Board implements BoardControl {
             numLinesRemoved += numFullLines;
             //statusbar.setText(String.valueOf(numLinesRemoved));
             //Add to the score
-            scoreTracker.addScoreEvent(ScoreTracker.ScoreEvent.fromInt(numFullLines));
+            try{
+                scoreTracker.addScoreEvent(ScoreTracker.ScoreEvent.fromInt(numFullLines));
+                difficultyTracker.addLinesRemoved(numFullLines);
+            } catch (Exception e) {
+                PlayN.log().error("Issue in Board.removeFullLines():" + e.toString());}
             isFallingFinished = true;
             curPiece.setShape(Tetrominoes.NoShape);
             //repaint();
@@ -443,5 +448,8 @@ public class Board implements BoardControl {
     	java.util.Random random = new java.util.Random();
     	int i = random.nextInt(3);
     	bangSounds[i].play();
+    }
+    public int getUpdateRate(){
+        return difficultyTracker.getRateInMilliseconds();
     }
 }

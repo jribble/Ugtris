@@ -14,6 +14,9 @@ public class Ugtris implements Game {
 	private Board board = null;
 	private Console console;
     private List<HasBoardControl> controllers = new ArrayList<HasBoardControl>();
+    private final int GAME_UPDATE_RATE = 5;
+    private int updateCounter = 0;
+    private int ugtrisRate;
 	
   @Override
   public void init() {
@@ -28,6 +31,7 @@ public class Ugtris implements Game {
     
     board = new Board(this, 100, 10, 200, 380);
     console = new SideConsole ( 300, 0, 100, 400, board.squareWidth(), board.squareHeight() );
+    ugtrisRate = DifficultyTracker.TIME_START;
     board.setConsole(console);
     connectControllers();
     KeyboardController controller = new KeyboardController();
@@ -44,12 +48,18 @@ public class Ugtris implements Game {
 
   @Override
   public void update(float delta) {
-	  board.update();
+      updateCounter += delta;
+      if(updateCounter >= ugtrisRate)
+      {
+          board.update();
+          updateCounter = 0;
+          ugtrisRate = board.getUpdateRate();
+      }
   }
 
   @Override
   public int updateRate() {
-    return 125;
+    return GAME_UPDATE_RATE;
   }
 
   public void addController ( HasBoardControl controller ) {
