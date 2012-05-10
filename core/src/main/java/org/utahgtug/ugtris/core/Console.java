@@ -9,4 +9,6 @@ public interface Console {
 	public void paint ( );
 
     public void setLevel(int level);
+
+    public void setStatus(String status);
 }

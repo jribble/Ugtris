@@ -188,6 +188,10 @@ public class Board implements BoardControl {
             board[(y * BoardWidth) + x] = curPiece.getShape();
         }
 
+        if(curY >= 28 )  {
+            gameOver();
+        }
+        
         // Play the sound for the piece hitting the bottom of the board
         playThump();
 
@@ -200,7 +204,11 @@ public class Board implements BoardControl {
         if (!isFallingFinished)
             newPiece();
     }
-
+    private void gameOver()
+    {
+        console.setStatus("Game Over!");
+        pause();
+    }
     private void newPiece()
     {
     	curPiece.setShape(nextPiece.getShape());

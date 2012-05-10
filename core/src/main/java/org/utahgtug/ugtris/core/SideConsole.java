@@ -21,6 +21,7 @@ public class SideConsole implements Console {
 	
 	int score;
     int level;
+    String status = null;
 
 	Shape.Tetrominoes nextShape;
 	
@@ -40,6 +41,10 @@ public class SideConsole implements Console {
 		this.score = score;		
 	}
 
+    @Override
+    public void setStatus(String status){
+        this.status = status;
+    }
     @Override
     public void setLevel(int level) {
         this.level = level;
@@ -64,6 +69,14 @@ public class SideConsole implements Console {
 
     	layer.canvas().setStrokeColor(textColor);
     	layer.canvas().setFillColor(textColor);
+
+        if(status != null)  {
+            layer.canvas().setFillColor(Color.rgb(255, 0, 0));
+            layer.canvas().drawText(status, curX, curY);
+            curY = curY + 20;
+            layer.canvas().setFillColor(textColor);
+        }
+
     	layer.canvas().drawText("Score: " + score, curX, curY);
 
         curY = curY + 20;
